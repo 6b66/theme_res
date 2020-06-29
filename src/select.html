@@ -1,0 +1,44 @@
+
+<body>
+  <h1>タイトルとか</h1>
+  <div id="hello"></div>
+  <div id="matchInfo"></div>
+  <button id="RandomMatch">ランダムマッチ</button>
+  <p><input type="text" placeholder="ルームID" name="RoomId" id="RoomBox"></p>
+  <button id="RoomMatch">ルームマッチ</button>
+  <script>
+
+    document.getElementById('hello').innerHTML = "<p>ようこそ! " + UserName + " さん</p>";
+
+    $("#RandomMatch").click(function() {
+      array = {
+        "mode" : "match",
+        "name" : UserName,
+        "room" : "0"
+      };
+      send_message(JSON.stringify(array));
+    });
+
+    $("#RoomMatch").click(function() {
+      var RoomId = document.getElementById('RoomBox').value;
+      if(RoomId != "" && RoomId != "0") {
+        array = {
+          "mode" : "match",
+          "name" : UserName,
+          "room" : RoomId
+        };
+        send_message(JSON.stringify(array));
+      }else if(RoomId == "") {
+        Display("ルームIDを入力してください。");
+      }else {
+        Display("0 は使用できません。");
+      }
+    });
+
+    info = document.getElementById('matchInfo');
+    function Display(msg) {
+      info.innerHTML = '<p>'+ msg +'</p>';
+    }
+
+  </script>
+</body>

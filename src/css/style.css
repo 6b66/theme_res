@@ -1,0 +1,82 @@
+body {
+  background-color: #66cdaa;
+}
+
+.InfoBox {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  text-align: center;
+  background-color: #ffff00;
+  color: #dc143c;
+  font-size: 25px;
+}
+
+.BOX  {
+  width: 80%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15%;
+}
+
+.ABOX {
+  margin-right: 45px;
+}
+
+
+.A{
+  width: 100%;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.B{
+  width: 100%;
+  height: 50px;
+  padding-left: 15px;
+}
+
+.mybtn {
+  margin-left: auto;
+  width: 45%;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.radio-inline__input {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+}
+
+.radio-inline__label {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin-left: 18px;
+    border-radius: 3px;
+    transition: all .2s;
+}
+
+.radio-inline__input:checked + .radio-inline__label {
+    background: #dc143c;
+    color: #fff;
+    text-shadow: 0 0 1px rgba(0,0,0,.7);
+}
+.space {
+  padding: 0px;
+}
+
+@media screen and (min-width:1024px) {
+  .BOX  {
+    width: 25%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15%;
+  }
+}

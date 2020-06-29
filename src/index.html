@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>課題研究</title>
+  <meta charset="utf-8">
+
+  <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/style.css" rel="stylesheet">
+
+  <script type="text/javascript" src="./js\jquery.min.js"></script>
+  <script type="text/javascript" src="./js\jquery-1.3.2.min.js"></script>
+
+  <script>
+
+    var wsUri = "ws://localhost:9000/server.php";
+    websocket = new WebSocket(wsUri);
+
+    var UserName;
+
+    websocket.onopen = function(ev) {
+      //alert("open websocket");
+    }
+
+    websocket.onerror = function(ev) {
+      alert("error");
+    }
+
+    websocket.onmessage = function(ev) {
+      var getdata = JSON.parse( ev.data );
+      if(getdata["mode"] == "loginInfo") {
+        login(getdata);
+      }else if(getdata["mode"] == "loginsuccess") {
+        UserName = getdata["name"];
+        change("select");
+      }else if(getdata["mode"] == "matchInfo") {
+        Display(getdata["msg"]);
+      }
+    };
+
+    function send_message(type) {
+  		websocket.send(type);
+  	}
+
+    /*window.addEventListener('beforeunload', function(e){
+      socket.close();
+      e.returnValue = '';
+    });*/
+
+    window.onbeforeunload = function(ev) {
+      var ary = {
+        "mode" : "logout",
+        "name" : UserName
+      };
+      send_message(JSON.stringify(ary));
+      websocket.close();
+      ev.returnValue = '';
+      return "";
+    }
+
+    function change(page) {
+      $(function(){
+        $("body").load(page+".html");
+      });
+    }
+
+  </script>
+
+</head>
+<body>
+  <div id="BOX" class="BOX row">
+
+    <fieldset class="col-lg-12">
+      <div id="InfoBox" class="InfoBox rounded border"></div>
+      <input id="item-1" class="radio-inline__input" type="radio" name="accessible-radio" value="item-1" checked="checked"/>
+      <label class="radio-inline__label" for="item-1">
+        ログイン
+      </label>
+      <input id="item-2" class="radio-inline__input" type="radio" name="accessible-radio" value="item-2"/>
+      <label class="radio-inline__label" for="item-2">
+        新規ログイン
+      </label>
+    </fieldset>
+
+   <div id="A" class="A col-lg-12">
+    <p><input type="text" class="form-control" placeholder="ユーザー名" name="name" id="namebox"></p>
+    <p><input type="text" class="form-control" placeholder="ID" name="id" id="idbox"></p>
+  </div>
+
+   <div id="B" class="B row col-lg-12">
+     <button class="btn btn-lg btn-primary send_btn mybtn" type="submit"id="send">認証</button>
+     <button class="btn btn-lg btn-primary exit_btn mybtn" type="submit"id="exit">exit</button>
+    </div>
+  </div>
+
+  <script>
+    var InfoBox = document.getElementById('InfoBox');
+
+    function login( getdata ) {
+      Display(getdata["msg"]);
+    }
+
+    $("#send").click(function() {
+      var mode;
+      if(document.getElementById('item-1').checked == true) {
+        mode = "login";
+      }else {
+        mode = "new";
+      }
+
+      var name = document.getElementById('namebox').value;
+      var id = document.getElementById('idbox').value;
+
+      var array = {
+        "mode" : mode,
+        "name" : name,
+        "id" : id
+      };
+
+      if(mode != null) {
+        if(name != "" && id != "") {
+          send_message(JSON.stringify(array));
+        }else {
+          Display("ユーザー名、またはIDを入力してください。");
+        }
+      }
+    });
+
+    $('#exit').click(function(ev) {
+      websocket.close();
+      Display("終了しました。ウィンドウを閉じてください。");
+    });
+
+    function Display(msg) {
+      InfoBox.innerHTML = '<p>'+ msg +'</p>';
+    }
+  </script>
+
+</body>
+
+</html>
